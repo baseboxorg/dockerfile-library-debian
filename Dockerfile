@@ -14,6 +14,13 @@ RUN chmod 500 \
 RUN docker-apt-install \
     apt-utils
 
+# fix locale.
+ENV LANG en_US.UTF-8
+ENV LC_CTYPE en_US.UTF-8
+RUN docker-apt-install language-pack-en        && \
+    locale-gen en_US                            && \
+    update-locale LANG=$LANG LC_CTYPE=$LC_CTYPE
+    
 CMD ["/bin/bash", "-l"]
 
 # Rockerfiles have this, but don't work with Docker Hub
