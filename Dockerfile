@@ -17,8 +17,7 @@ RUN docker-apt-install \
 # fix locale.
 ENV LANG en_US.UTF-8
 ENV LC_CTYPE en_US.UTF-8
-RUN docker-apt-install language-pack-en-base    && \
-    locale-gen en_US                            && \
+RUN locale-gen en_US                            && \
     update-locale LANG=$LANG LC_CTYPE=$LC_CTYPE
     
 CMD ["/bin/bash", "-l"]
