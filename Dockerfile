@@ -4,24 +4,28 @@
 # todo: this is pretty much identical to baseboxorg/library-ubuntu
 #
 
-FROM debian:jessie
+FROM debian:jessie-slim
 
-ADD ./src/docker-apt-install.sh /usr/local/sbin/docker-apt-install
+RUN groupadd -g 911 abc \
+ && useradd -m -s /bin/bash -g 911 -u 911 abc
 
-RUN chmod 500 \
-    /usr/local/sbin/docker-apt-install
+COPY ./src/docker-apt-install.sh /usr/local/sbin/docker-install
 
-RUN docker-apt-install \
-    apt-utils
-
-# fix locale.
-ENV LANG en_US.UTF-8
-ENV LC_CTYPE en_US.UTF-8
-RUN locale-gen en_US                            && \
-    update-locale LANG=$LANG LC_CTYPE=$LC_CTYPE
-    
-CMD ["/bin/bash", "-l"]
+RUN set -eux; \
+    \
+    echo "deb http://ftp.debian.org/debian jessie-backports main" >/etc/apt/sources.list.d/backports.list; \
+    docker-install apt-utils
 
 # Rockerfiles have this, but don't work with Docker Hub
 # ATTACH ["/bin/bash", "-l"]
 # PUSH baseboxorg/library-debian:{{ $version }}
+
+RUN groupadd -g 911 abc \
+ && useradd -m -s /bin/bash -g 911 -u 911 abc
+
+COPY ./src/docker-apt-install.sh /usr/local/sbin/docker-install
+
+RUN set -eux; \
+    \
+    echo "deb http://ftp.debian.org/debian jessie-backports main" >/etc/apt/sources.list.d/backports.list; \
+    docker-install apt-utils
