@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # helper to correctly do an 'apt-get install' inside a Dockerfile's RUN
 #
 # the upstream mirror seems to fail a lot so this will retry 5 times
 #
-# todo: this is copypasta with baseboxorg/library-ubuntu/src/
+# todo: this is copypasta with bwstitt/library-ubuntu/src/
 #
 
 set -e
@@ -14,6 +14,7 @@ function apt-install {
 }
 
 function retry {
+    # inspired by:
     # http://unix.stackexchange.com/questions/82598/how-do-i-write-a-retry-logic-in-script-to-keep-retrying-to-run-it-upto-5-times
     local n=1
     local max=5
@@ -39,6 +40,10 @@ function retry {
 }
 
 export DEBIAN_FRONTEND=noninteractive
+
+# stop apt from starting processes on install
+# /usr/sbin/policy-rc.d is setup to exit 101 by upstream
+export RUNLEVEL=1
 
 echo "apt-key update:"
 apt-key update 2>&1
