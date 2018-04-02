@@ -11,7 +11,7 @@ RUN groupadd -g 911 abc \
 
 COPY docker-apt-install.sh /usr/local/sbin/docker-install
 
-#RUN chmod 500 /usr/local/sbin/docker-apt-install
+RUN chmod 500 /usr/local/sbin/docker-apt-install
 
 RUN set -eux; \
     \
