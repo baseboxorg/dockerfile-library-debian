@@ -9,9 +9,9 @@ FROM debian:jessie-slim
 RUN groupadd -g 911 abc \
  && useradd -m -s /bin/bash -g 911 -u 911 abc
 
-COPY ./src/docker-apt-install.sh /usr/local/sbin/docker-install
+COPY docker-apt-install.sh /usr/local/sbin/docker-install
 
-RUN chmod 500 /usr/local/sbin/docker-apt-install
+#RUN chmod 500 /usr/local/sbin/docker-apt-install
 
 RUN set -eux; \
     \
